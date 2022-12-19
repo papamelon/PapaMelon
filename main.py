@@ -45,21 +45,29 @@ async def on_message(message):
             lang = json.loads(result)
 
             # 번역할 타겟 언어 선택
-            response = await message.channel.send("문장을 어떤 언어로 번역 하시겠습니까?")
+            embed=discord.Embed(title="문장을 어떤 언어로 번역 하시겠습니까?", color=0x0a11e6)
+            embed.set_footer(text="papaMelon 번역 기능") 
+            response = await message.channel.send(embed=embed)
             await response.add_reaction("🇰🇷")
             await response.add_reaction("🇺🇸")
             await response.add_reaction("🇯🇵")
             await response.add_reaction("🇨🇳")
             await response.add_reaction("🇩🇪")
+            await response.add_reaction("🇫🇷")
+            await response.add_reaction("🇮🇹")
+            await response.add_reaction("🇪🇸")
+            await response.add_reaction("🇵🇹")
 
             try:
                 def check(reaction, user):
-                    return str(reaction) in ['🇰🇷', '🇺🇸', '🇯🇵', '🇨🇳', '🇩🇪'] and \
+                    return str(reaction) in ['🇰🇷', '🇺🇸', '🇯🇵', '🇨🇳', '🇩🇪', '🇫🇷', '🇮🇹', '🇪🇸', '🇵🇹'] and \
                     user == message.author and reaction.message.id == response.id
-                    
+
                 reaction, user = await app.wait_for('reaction_add', check=check, timeout=30.0)
             except asyncio.TimeoutError:
-                await message.channel.send("너무 반응이 오래걸려요.")
+                embed=discord.Embed(title="반응 입력 시간이 초과되었습니다.", color=0xe60a0a)
+                embed.set_footer(text="papaMelon 번역 기능")
+                await message.channel.send(embed=embed) 
                 await response.delete()
             else:
                 await translation.translation(message, lang, reaction)

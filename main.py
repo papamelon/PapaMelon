@@ -1,6 +1,7 @@
 import discord
 import test
 from discord.ext import commands
+import TOKEN
  
 intent = discord.Intents.default()
 intent.message_content = True
@@ -16,4 +17,4 @@ async def on_ready():
 async def hello(ctx):
     await test.hello(ctx)
 
-app.run("MTA1NDE4NDI2OTEwMDA5NzY5OA.G6Sfut.NYfm2a1JfGQX5PSstmjyrSp-6VFcWnIcW7N55w")
+app.run(TOKEN.DISCORD_BOT_TOKEN)

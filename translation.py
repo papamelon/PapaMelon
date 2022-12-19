@@ -7,19 +7,21 @@ import json
 import emoji
 
 
-def reaction_to_emoji(answer_reaction):
-    if emoji.demojize(answer_reaction) == emoji.emojize(':flag: United States:'):
-        return "en"
-    elif emoji.demojize(answer_reaction) == emoji.demojize('🇰🇷'):
-        return "ko"
-    elif emoji.demojize(answer_reaction) == emoji.demojize('🇯🇵'):
-        return "ja"
-    elif emoji.demojize(answer_reaction) == emoji.demojize('🇩🇪'):
-        return "de"
-    elif emoji.demojize(answer_reaction) == emoji.emojize(':flag: China:'):
-        return "zh-CN"
-    else:
-        return "error"
+# def reaction_to_emoji(answer_reaction):
+#     answer_emoji = emoji.demojize(answer_reaction)
+#     print(answer_emoji)
+#     if answer_emoji == emoji.demojize('🇰🇷'):
+#         return "ko"
+#     elif answer_emoji == emoji.demojize('🇺🇸'):
+#         return "en"
+#     elif answer_emoji == emoji.demojize('🇨🇳'):
+#         return "zh-CN"
+#     elif answer_emoji == emoji.demojize('🇯🇵'):
+#         return "ja"
+#     elif answer_emoji == emoji.demojize('🇩🇪'):
+#         return "de"
+#     else:
+#         return "error"
 
 # 들어온 메세지, 감지된 언어, 바꿀 언어가 함수의 인자로 들어옴
 async def translation(message, result, reaction):
@@ -36,13 +38,26 @@ async def translation(message, result, reaction):
         encText = urllib.parse.quote(lan)
         
         print(lang, reaction)
-        print(emoji.demojize(reaction))
 
-        toCon = reaction_to_emoji(reaction)
+        toCon = ""
+
+        if reaction == "🇰🇷":
+            toCon = "ko"
+        elif reaction == "🇺🇸":
+            toCon = "en"
+        elif reaction == "🇯🇵":
+            toCon = "ja"
+        elif reaction == "🇨🇳":
+            toCon = "zh-CN"
+        elif reaction == "🇩🇪":
+            toCon = "de"
+        else:
+            toCon = "error"
+
         print(toCon)
 
         data = "source=" + lang + "&target=" + toCon + "&text=" + encText
-
+        
         url = "https://openapi.naver.com/v1/papago/n2mt"
 
         request = urllib.request.Request(url)

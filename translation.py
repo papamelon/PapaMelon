@@ -1,3 +1,4 @@
+from urllib.error import HTTPError
 import discord
 import os
 import sys
@@ -58,6 +59,8 @@ async def lang(app, message, lang):
 
 # 들어온 메세지, 감지된 언어, 바꿀 언어가 함수의 인자로 들어옴
 async def translation(message, result, reaction):
+    # 예외처리를 위한 트라이무 구문
+    try:
         # Papago OpenAPI 셋업
         client_id = TOKEN.CLIENT_ID
         client_secret = TOKEN.CLIENT_SECRET
@@ -122,3 +125,9 @@ async def translation(message, result, reaction):
                 embed.add_field(name="번역된 문장", value=answer['message']['result']['translatedText'], inline=True)
                 embed.set_footer(text="papaMelon 번역 기능")
                 await message.channel.send(embed=embed)
+
+    # 잘못된 형식의 문장 예외처리
+    except HTTPError:
+        embed=discord.Embed(title="🚫 문장의 형식이 잘못되었습니다.", color=0xe60a0a)
+        embed.set_footer(text="papaMelon 번역 기능")
+        await message.channel.send(embed=embed)

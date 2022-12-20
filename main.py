@@ -7,6 +7,7 @@ import json
 import emoji
 import asyncio
 
+import slots
 import translation
 import TOKEN
  
@@ -22,55 +23,68 @@ async def on_ready():
 
 @app.event
 async def on_message(message):
+    # 번역 기능을 위한 코드
     if message.content.startswith("pp 번역 "):
         
         # 번역할 문장 변수 선언
         lan = str(message.content[6:])
         
-        # Papago OpenAPI 사용 문장
-        client_id = TOKEN.CLIENT_ID
-        client_secret = TOKEN.CLIENT_SECRET
-        encQuery = urllib.parse.quote(lan)
-        data = "query=" + encQuery
-        url = "https://openapi.naver.com/v1/papago/detectLangs"
-        request = urllib.request.Request(url)
-        request.add_header("X-Naver-Client-Id",client_id)
-        request.add_header("X-Naver-Client-Secret",client_secret)
-        response = urllib.request.urlopen(request, data=data.encode("utf-8"))
-        rescode = response.getcode()
+        await translation.lang(app, message, lan)
 
-        if(rescode==200):
-            response_body = response.read()
-            result = response_body.decode('utf-8')
-            lang = json.loads(result)
+        # # Papago OpenAPI 사용 문장
+        # client_id = TOKEN.CLIENT_ID
+        # client_secret = TOKEN.CLIENT_SECRET
+        # encQuery = urllib.parse.quote(lan)
+        # data = "query=" + encQuery
+        # url = "https://openapi.naver.com/v1/papago/detectLangs"
+        # request = urllib.request.Request(url)
+        # request.add_header("X-Naver-Client-Id",client_id)
+        # request.add_header("X-Naver-Client-Secret",client_secret)
+        # response = urllib.request.urlopen(request, data=data.encode("utf-8"))
+        # rescode = response.getcode()
 
-            # 번역할 타겟 언어 선택
-            embed=discord.Embed(title="문장을 어떤 언어로 번역 하시겠습니까?", color=0x0a11e6)
-            embed.set_footer(text="papaMelon 번역 기능") 
-            response = await message.channel.send(embed=embed)
-            await response.add_reaction("🇰🇷")
-            await response.add_reaction("🇺🇸")
-            await response.add_reaction("🇯🇵")
-            await response.add_reaction("🇨🇳")
-            await response.add_reaction("🇩🇪")
-            await response.add_reaction("🇫🇷")
-            await response.add_reaction("🇮🇹")
-            await response.add_reaction("🇪🇸")
-            await response.add_reaction("🇵🇹")
+        # if(rescode==200):
+        #     response_body = response.read()
+        #     result = response_body.decode('utf-8')
+        #     lang = json.loads(result)
 
-            try:
-                def check(reaction, user):
-                    return str(reaction) in ['🇰🇷', '🇺🇸', '🇯🇵', '🇨🇳', '🇩🇪', '🇫🇷', '🇮🇹', '🇪🇸', '🇵🇹'] and \
-                    user == message.author and reaction.message.id == response.id
+        #     # 번역할 타겟 언어 선택
+        #     embed=discord.Embed(title="문장을 어떤 언어로 번역 하시겠습니까?", color=0x0a11e6)
+        #     embed.set_footer(text="papaMelon 번역 기능") 
+        #     response = await message.channel.send(embed=embed)
+        #     await response.add_reaction("🇰🇷")
+        #     await response.add_reaction("🇺🇸")
+        #     await response.add_reaction("🇯🇵")
+        #     await response.add_reaction("🇨🇳")
+        #     await response.add_reaction("🇩🇪")
+        #     await response.add_reaction("🇫🇷")
+        #     await response.add_reaction("🇮🇹")
+        #     await response.add_reaction("🇪🇸")
+        #     await response.add_reaction("🇵🇹")
 
-                reaction, user = await app.wait_for('reaction_add', check=check, timeout=30.0)
-            except asyncio.TimeoutError:
-                embed=discord.Embed(title="반응 입력 시간이 초과되었습니다.", color=0xe60a0a)
-                embed.set_footer(text="papaMelon 번역 기능")
-                await message.channel.send(embed=embed) 
-                await response.delete()
-            else:
-                await translation.translation(message, lang, reaction)
-                await response.delete()
+        #     try:
+        #         def check(reaction, user):
+        #             return str(reaction) in ['🇰🇷', '🇺🇸', '🇯🇵', '🇨🇳', '🇩🇪', '🇫🇷', '🇮🇹', '🇪🇸', '🇵🇹'] and \
+        #             user == message.author and reaction.message.id == response.id
+
+        #         reaction, user = await app.wait_for('reaction_add', check=check, timeout=30.0)
+        #     except asyncio.TimeoutError:
+        #         embed=discord.Embed(title="반응 입력 시간이 초과되었습니다.", color=0xe60a0a)
+        #         embed.set_footer(text="papaMelon 번역 기능")
+        #         await message.channel.send(embed=embed) 
+        #         await response.delete()
+        #     else:
+        #         await translation.translation(message, lang, reaction)
+        #         await response.delete()
+    
+    # 슬롯 기능을 위한 코드
+    elif message.content.startswith("pp 슬롯"):
+        embed=discord.Embed(title="슬롯머신이 돌아갑니다", color=0xed07cf)
+        embed.add_field(name="첫번째", value="[ ]", inline=True)
+        embed.add_field(name="두번째", value="[ ]", inline=True)
+        embed.add_field(name="세번째", value="[ ]", inline=True)
+        embed.set_footer(text="papaMelon 슬롯 기능")
+        slot = await message.channel.send(embed=embed)
+        await slots.slot(message, slot)
 
 app.run(TOKEN.DISCORD_BOT_TOKEN)

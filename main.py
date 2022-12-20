@@ -29,6 +29,7 @@ async def on_message(message):
         # 번역할 문장 변수 선언
         lan = str(message.content[6:])
         
+        # translation.lang 함수에 값 넘기기
         await translation.lang(app, message, lan)
 
     
@@ -40,6 +41,9 @@ async def on_message(message):
         embed.add_field(name="세번째", value="[ ]", inline=True)
         embed.set_footer(text="papaMelon 슬롯 기능")
         slot = await message.channel.send(embed=embed)
+
+        # slots.slot 함수에 값 넘기기
         await slots.slot(message, slot)
 
+# 토큰을 사용하여 봇 실행하기
 app.run(TOKEN.DISCORD_BOT_TOKEN)

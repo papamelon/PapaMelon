@@ -59,7 +59,7 @@ async def on_message(message):
 
     # 아재개그 기능을 위한 코드
     elif message.content.startswith("pp 아재개그"):
-        await funny.funny_chat(message)
+        await funny.funny_chat(message, app)
 
 # 토큰을 사용하여 봇 실행하기
 app.run(TOKEN.DISCORD_BOT_TOKEN)

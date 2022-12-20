@@ -76,29 +76,25 @@ async def translation(message, result, reaction):
         toCon = ""
 
         # 사용자가 적은 문장을 이모지 이름으로 변환
-        reaction_emoji = emoji.demojize(str(reaction))
+        reaction_emoji = str(reaction)
+
+        # 이모지에 대응 되는 국가 코드
+        contury = {
+            "🇰🇷" : "ko",
+            "🇺🇸" : "en",
+            "🇯🇵" : "ja",
+            "🇨🇳" : "zh-CN",
+            "🇩🇪" : "de",
+            "🇵🇹" : "pt",
+            "🇪🇸" : "es",
+            "🇮🇹" : "it",
+            "🇫🇷" : "fr"
+        }
 
         # 누른 이모지 반응에 따라 toCon에 다른 값 저장
-        if reaction_emoji == ":South_Korea:":
-            toCon = "ko"
-        elif reaction_emoji == ":United_States:":
-            toCon = "en"
-        elif reaction_emoji == ":Japan:":
-            toCon = "ja"
-        elif reaction_emoji == ":China:":
-            toCon = "zh-CN"
-        elif reaction_emoji == ":Germany:":
-            toCon = "de"
-        elif reaction_emoji == ":Portugal:":
-            toCon = "pt"
-        elif reaction_emoji == ":Spain:":
-            toCon = "es"
-        elif reaction_emoji == ":Italy:":
-            toCon = "it"
-        elif reaction_emoji == ":France:":
-            toCon = "fr"
-        else:
-            toCon = "error"
+        for key in contury.keys():
+            if reaction_emoji == key:
+                toCon = contury[key]
 
         # source 와 target 이 동일하면 오류가 발생하기 때문에 예외 처리
         if lang == toCon:

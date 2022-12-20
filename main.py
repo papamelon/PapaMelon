@@ -18,12 +18,14 @@ intent.message_content = True
 
 app = commands.Bot(command_prefix='pp ', intents=intent)
  
+# 봇이 준비되면 실행할 문장들
 @app.event
 async def on_ready():
     print('Done!')
     await app.change_presence(status=discord.Status.online, activity=None)
 
 
+# 메시지 이벤트 발생시
 @app.event
 async def on_message(message):
     # 번역 기능을 위한 코드

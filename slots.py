@@ -38,7 +38,7 @@ async def slot(message, slot):
     await slot.edit(embed=embed3)
     await asyncio.sleep(1.5)
 
-    fail_embed=discord.Embed(title="💣 꽝", description="맞은게 하나도 없네요..", color=0xed0707)
+    fail_embed=discord.Embed(title="🧨 꽝", description="맞은게 하나도 없네요..", color=0xed0707)
     fail_embed.set_footer(text="papaMelon 슬롯 기능")
 
     double_embed=discord.Embed(title="💵 더블", description="2개 맞았어요.", color=0xfff700)

@@ -7,6 +7,7 @@ import json
 import emoji
 import asyncio
 
+import funny
 import cleaning
 import slots
 import translation
@@ -48,12 +49,17 @@ async def on_message(message):
         await slots.slot(message, slot)
 
 
+    # 청소 기능을 위한 코드
     elif message.content.startswith("pp 청소 "):
         # 청소할 문장 갯수
         amount = str(message.content[6:])
 
         # cleaning.clean 로 메세지와 청소할 양 넘기기
         await cleaning.clean(message, amount)
+
+    # 아재개그 기능을 위한 코드
+    elif message.content.startswith("pp 아재개그"):
+        await funny.funny_chat(message)
 
 # 토큰을 사용하여 봇 실행하기
 app.run(TOKEN.DISCORD_BOT_TOKEN)

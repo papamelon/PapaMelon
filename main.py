@@ -37,7 +37,7 @@ async def on_message(message):
     
     # 슬롯 기능을 위한 코드
     elif message.content.startswith("pp 슬롯"):
-        embed=discord.Embed(title="슬롯머신이 돌아갑니다", color=0xed07cf)
+        embed=discord.Embed(title="💰 슬롯머신이 돌아갑니다", color=0xed07cf)
         embed.add_field(name="첫번째", value="[ ]", inline=True)
         embed.add_field(name="두번째", value="[ ]", inline=True)
         embed.add_field(name="세번째", value="[ ]", inline=True)

@@ -27,7 +27,7 @@ async def lang(app, message, lang):
             lang = json.loads(result)
 
             # 번역할 타겟 언어 선택
-            embed=discord.Embed(title="문장을 어떤 언어로 번역 하시겠습니까?", color=0x0a11e6)
+            embed=discord.Embed(title="🌐 문장을 어떤 언어로 번역 하시겠습니까?", color=0x0a11e6)
             embed.set_footer(text="papaMelon 번역 기능") 
             response = await message.channel.send(embed=embed)
             await response.add_reaction("🇰🇷")
@@ -47,7 +47,7 @@ async def lang(app, message, lang):
 
                 reaction, user = await app.wait_for('reaction_add', check=check, timeout=30.0)
             except asyncio.TimeoutError:
-                embed=discord.Embed(title="반응 입력 시간이 초과되었습니다.", color=0xe60a0a)
+                embed=discord.Embed(title="⏱️ 반응 입력 시간이 초과되었습니다.", color=0xe60a0a)
                 embed.set_footer(text="papaMelon 번역 기능")
                 await message.channel.send(embed=embed) 
                 await response.delete()
@@ -99,7 +99,7 @@ async def translation(message, result, reaction):
 
         # source 와 target 이 동일하면 오류가 발생하기 때문에 예외 처리
         if lang == toCon:
-            embed=discord.Embed(title="언어가 동일하여 번역 할 수 없습니다.", color=0xe60a0a)
+            embed=discord.Embed(title="🚫 언어가 동일하여 번역 할 수 없습니다.", color=0xe60a0a)
             embed.set_footer(text="papaMelon 번역 기능")
             await message.channel.send(embed=embed) 
 

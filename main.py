@@ -7,6 +7,7 @@ import json
 import emoji
 import asyncio
 
+import cleaning
 import slots
 import translation
 import TOKEN
@@ -20,6 +21,7 @@ app = commands.Bot(command_prefix='pp ', intents=intent)
 async def on_ready():
     print('Done!')
     await app.change_presence(status=discord.Status.online, activity=None)
+
 
 @app.event
 async def on_message(message):
@@ -44,6 +46,14 @@ async def on_message(message):
 
         # slots.slot 함수에 값 넘기기
         await slots.slot(message, slot)
+
+
+    elif message.content.startswith("pp 청소 "):
+        # 청소할 문장 갯수
+        amount = str(message.content[6:])
+
+        # cleaning.clean 로 메세지와 청소할 양 넘기기
+        await cleaning.clean(message, amount)
 
 # 토큰을 사용하여 봇 실행하기
 app.run(TOKEN.DISCORD_BOT_TOKEN)

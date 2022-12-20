@@ -24,6 +24,8 @@ async def slot(message, slot):
         embed.set_footer(text="papaMelon 슬롯 기능")
         return embed
 
+    await asyncio.sleep(1.5)
+    
     embed1 = create_embed(choice1, "", "")
     await slot.edit(embed=embed1)
     await asyncio.sleep(1.5)

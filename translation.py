@@ -117,7 +117,7 @@ async def translation(message, result, reaction):
                 response_body = response.read()
                 trans = response_body.decode('utf-8')
                 answer = json.loads(trans)
-                embed=discord.Embed(color=0x1fea37)
+                embed=discord.Embed(title="📜 번역결과", color=0x1fea37)
                 embed.add_field(name="번역할 문장", value=lan, inline=False)
                 embed.add_field(name="번역된 문장", value=answer['message']['result']['translatedText'], inline=True)
                 embed.set_footer(text="papaMelon 번역 기능")

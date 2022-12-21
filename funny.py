@@ -14,7 +14,7 @@ async def funny_chat(message, app):
     rand_ment = random.choice(list(funny_ment.items()))
 
     # 문제 출제
-    embed=discord.Embed(title="아재개그", description=rand_ment[0], color=0x00ffcc)
+    embed=discord.Embed(title="🤣 아재개그", description=rand_ment[0], color=0x00ffcc)
     embed.set_footer(text="papaMelon 아재개그 기능")
     await message.channel.send(embed=embed)
 
@@ -28,7 +28,7 @@ async def funny_chat(message, app):
         
     # 시간초과 시 예외처리
     except asyncio.TimeoutError:
-        embed=discord.Embed(title="시간초과", description="정답은 "+rand_ment[1]+" 입니다.", color=0xff0000)
+        embed=discord.Embed(title="⏱️ 시간초과", description="정답은 "+rand_ment[1]+" 입니다.", color=0xff0000)
         embed.set_footer(text="papaMelon 아재개그 기능")
         await message.channel.send(embed=embed)
 
@@ -36,12 +36,12 @@ async def funny_chat(message, app):
     else:
         # 정답이랑 입력이랑 같다면 실행할 문장
         if msg.content == rand_ment[1]:
-            embed=discord.Embed(title="정답을 정확히 맞추셨네요!", description="정답은 "+rand_ment[1]+" 입니다.", color=0x04ff00)
+            embed=discord.Embed(title="🎉 정답을 정확히 맞추셨네요!", description="정답은 "+rand_ment[1]+" 입니다.", color=0x04ff00)
             embed.set_footer(text="papaMelon 아재개그 기능")
             await message.channel.send(embed=embed)
 
         # 정답이랑 입력이 다를시 실행할 문장
         else:
-            embed=discord.Embed(title="틀렸습니다.", description="정답은 "+rand_ment[1]+" 입니다.", color=0xff0000)
+            embed=discord.Embed(title="❌ 틀렸습니다.", description="정답은 "+rand_ment[1]+" 입니다.", color=0xff0000)
             embed.set_footer(text="papaMelon 아재개그 기능")
             await message.channel.send(embed=embed)

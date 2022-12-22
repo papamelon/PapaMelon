@@ -8,7 +8,7 @@ import asyncio
 import random
 
 # 채널에 보낸 메시지를 인자로 받는 slot 함수
-async def slot(message, slot):
+async def slot(message):
     
     emoji_list = ['🍓', '🍒', '🥕', '🍎', '🍌', '7️⃣']
 
@@ -24,6 +24,9 @@ async def slot(message, slot):
         embed.set_footer(text="papaMelon 슬롯 기능")
         return embed
 
+    embed = create_embed("", "", "")
+    slot = await message.channel.send(embed=embed)
+    
     await asyncio.sleep(1.5)
 
     embed1 = create_embed(choice1, "", "")

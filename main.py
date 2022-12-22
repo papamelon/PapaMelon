@@ -40,15 +40,9 @@ async def on_message(message):
     
     # 슬롯 기능을 위한 코드
     elif message.content.startswith("pp 슬롯"):
-        embed=discord.Embed(title="💰 슬롯머신이 돌아갑니다", color=0xed07cf)
-        embed.add_field(name="첫번째", value="[ ]", inline=True)
-        embed.add_field(name="두번째", value="[ ]", inline=True)
-        embed.add_field(name="세번째", value="[ ]", inline=True)
-        embed.set_footer(text="papaMelon 슬롯 기능")
-        slot = await message.channel.send(embed=embed)
 
         # slots.slot 함수에 값 넘기기
-        await slots.slot(message, slot)
+        await slots.slot(message)
 
 
     # 청소 기능을 위한 코드
@@ -58,6 +52,7 @@ async def on_message(message):
 
         # cleaning.clean 로 메세지와 청소할 양 넘기기
         await cleaning.clean(message, amount)
+
 
     # 아재개그 기능을 위한 코드
     elif message.content.startswith("pp 아재개그"):

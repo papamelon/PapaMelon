@@ -7,6 +7,7 @@ import json
 import emoji
 import asyncio
 
+import school_eat
 import funny
 import cleaning
 import slots
@@ -57,6 +58,14 @@ async def on_message(message):
     # 아재개그 기능을 위한 코드
     elif message.content.startswith("pp 아재개그"):
         await funny.funny_chat(message, app)
+
+
+    elif message.content.startswith("pp 급식 "):
+        # 학교 이름 저장할 변수
+        text = str(message.content[6:])
+
+        # school_eat에 eat 함수에 학교이름과 메시지 넘겨주기
+        await school_eat.eat(message, text)
 
 # 토큰을 사용하여 봇 실행하기
 app.run(TOKEN.DISCORD_BOT_TOKEN)

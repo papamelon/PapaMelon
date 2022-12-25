@@ -1,0 +1,14 @@
+youtube-dl==2021.12.17
+urllib3==1.26.13
+selenium==4.7.2
+requests==2.28.1
+nest-asyncio==1.5.6
+jsonschema==3.2.0
+emoji==2.2.0
+discord==2.0.0
+discord.py==2.1.0
+bs4==0.0.1
+beautifulsoup4==4.11.1
+async-generator==1.10
+async-timeout==4.0.2
+schoolInfo==1.0.2.0

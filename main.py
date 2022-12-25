@@ -7,13 +7,13 @@ import json
 import emoji
 import asyncio
 
-import music
-import school_eat
-import funny
-import cleaning
-import slots
-import translation
-import TOKEN
+from . import music
+from . import school_eat
+from . import funny
+from . import cleaning
+from . import slots
+from . import translation
+from . import TOKEN
  
 intent = discord.Intents.default()
 intent.message_content = True

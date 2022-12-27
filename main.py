@@ -72,6 +72,14 @@ async def on_message(message):
 
 
     else:
+        user = [] #유저가 입력한 노래 저장하는 배열
+        musictitle = [] #넌 노래들의 노래 제목
+        song_queue = [] #넌 노래들의 링크
+        musicnow = [] #현재 출력되는 노래
+
+        userF = [] #유저의 정보를 저장하느 배열
+        userFlist = [] #유저 개인별 노래저장하는 배열
+        allplaylist = [] #플레이리스트 배열
         
         if message.content.startswith("pp 들어와"):
             await music.come(message)

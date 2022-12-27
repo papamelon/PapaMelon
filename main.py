@@ -72,14 +72,6 @@ async def on_message(message):
 
 
     else:
-        user = [] #유저가 입력한 노래 저장하는 배열
-        musictitle = [] #넌 노래들의 노래 제목
-        song_queue = [] #넌 노래들의 링크
-        musicnow = [] #현재 출력되는 노래
-
-        userF = [] #유저의 정보를 저장하느 배열
-        userFlist = [] #유저 개인별 노래저장하는 배열
-        allplaylist = [] #플레이리스트 배열
         
         if message.content.startswith("pp 들어와"):
             await music.come(message)
@@ -93,39 +85,39 @@ async def on_message(message):
 
         elif message.content.startswith("pp 재생 "):
             name = str(message.content[6:])
-            await music.재생(message, name, musicnow, user, musictitle, song_queue)
+            await music.재생(message, name)
 
         elif message.content.startswith("pp 멜론차트"):
             await music.멜론차트(message)
 
         elif message.content.startswith("pp 일시정지"):
-            await music.일시정지(message, musicnow)
+            await music.일시정지(message)
 
         elif message.content.startswith("pp 다시재생"):
-            await music.다시재생(message, musicnow)
+            await music.다시재생(message)
 
         elif message.content.startswith("pp 노래끄기"):
-            await music.노래끄기(message, musicnow)
+            await music.노래끄기(message)
         
         elif message.content.startswith("pp 지금노래"):
-            await music.지금노래(message, musicnow)
+            await music.지금노래(message)
 
         elif message.content.startswith("pp 대기열추가 "):
             name = str(message.content[9:])
-            await music.대기열추가(message, name, user, musictitle, musicnow, song_queue)
+            await music.대기열추가(message, name)
 
         elif message.content.startswith("pp 대기열삭제 "):
             number = str(message.content[9:])
-            await music.대기열삭제(message, number, musicnow, user, musictitle, song_queue)
+            await music.대기열삭제(message, number)
 
         elif message.content.startswith("pp 목록"):
-            await music.목록(message, musictitle)
+            await music.목록(message)
 
         elif message.content.startswith("pp 목록초기화"):
-            await music.목록초기화(message, musicnow, user, musictitle, song_queue)
+            await music.목록초기화(message)
 
         elif message.content.startswith("pp 목록재생"):
-            await music.목록재생(message, user, musicnow, song_queue, musictitle, app)
+            await music.목록재생(message, app)
 
         elif message.content.startswith("pp 가사 "):
             name = str(message.content[6:])

@@ -23,7 +23,7 @@ userF = [] #유저의 정보를 저장하느 배열
 userFlist = [] #유저 개인별 노래저장하는 배열
 allplaylist = [] #플레이리스트 배열
 
-def title(msg, musictitle, musicnow):
+def title(msg):
     global music
 
     YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
@@ -54,7 +54,7 @@ def title(msg, musictitle, musicnow):
     return music, URL
 
 
-def play(ctx, musicnow, song_queue, user, musictitle, app):
+def play(ctx, app):
     global vc
     YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
     FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
@@ -64,9 +64,9 @@ def play(ctx, musicnow, song_queue, user, musictitle, app):
     del song_queue[0]
     vc = get(app.voice_clients, guild=ctx.guild)
     if not vc.is_playing():
-        vc.play(FFmpegPCMAudio(URL, **FFMPEG_OPTIONS), after=lambda e: play_next(ctx, musicnow, user, song_queue, musictitle)) 
+        vc.play(FFmpegPCMAudio(URL, **FFMPEG_OPTIONS), after=lambda e: play_next(ctx)) 
 
-def play_next(ctx, musicnow, user, song_queue, musictitle):
+def play_next(ctx):
     if len(musicnow) - len(user) >= 2:
         for i in range(len(musicnow) - len(user) - 1):
             del musicnow[0]
@@ -79,7 +79,7 @@ def play_next(ctx, musicnow, user, song_queue, musictitle):
             del user[0]
             del musictitle[0]
             del song_queue[0]
-            vc.play(discord.FFmpegPCMAudio(URL,**FFMPEG_OPTIONS), after=lambda e: play_next(ctx, musicnow, song_queue, user, musictitle))
+            vc.play(discord.FFmpegPCMAudio(URL,**FFMPEG_OPTIONS), after=lambda e: play_next(ctx))
 
 
 async def come(message):
@@ -93,11 +93,11 @@ async def come(message):
             await message.channel.send("채널에 유저가 접속해있지 않네요.")
 
 
-async def 나가(ctx):
+async def 나가(message):
     try:
         await vc.disconnect()
     except:
-        await ctx.send("이미 그 채널에 속해있지 않아요.")
+        await message.channel.send("이미 그 채널에 속해있지 않아요.")
 
 
 async def URL재생(message, url):
@@ -124,7 +124,7 @@ async def URL재생(message, url):
         await message.channel.send("노래가 이미 재생되고 있습니다!")
 
 
-async def 재생(message, msg, musicnow, user, musictitle, song_queue):
+async def 재생(message, msg):
 
     global vc
 
@@ -168,7 +168,7 @@ async def 재생(message, msg, musicnow, user, musictitle, song_queue):
         vc.play(FFmpegPCMAudio(URL, **FFMPEG_OPTIONS), after = lambda e: play_next(message, musicnow, song_queue, user, musictitle))
     else:
         user.append(msg)
-        result, URLTEST = title(msg, musictitle, musicnow)
+        result, URLTEST = title(msg)
         song_queue.append(URLTEST)
         await message.channel.send("이미 노래가 재생 중이라" + result + "을(를) 대기열로 추가시켰어요!")
 
@@ -205,7 +205,7 @@ async def 멜론차트(message):
         await message.channel.send("이미 노래가 재생 중이라 노래를 재생할 수 없어요!")
 
 
-async def 일시정지(message, musicnow):
+async def 일시정지(message):
     if vc.is_playing():
         vc.pause()
         await message.channel.send(embed = discord.Embed(title= "일시정지", description = musicnow[0] + "을(를) 일시정지 했습니다.", color = 0x00ff00))
@@ -213,7 +213,7 @@ async def 일시정지(message, musicnow):
         await message.channel.send("지금 노래가 재생되지 않네요.")
 
 
-async def 다시재생(message, musicnow):
+async def 다시재생(message):
     try:
         vc.resume()
     except:
@@ -222,7 +222,7 @@ async def 다시재생(message, musicnow):
          await message.channel.send(embed = discord.Embed(title= "다시재생", description = musicnow[0]  + "을(를) 다시 재생했습니다.", color = 0x00ff00))
 
 
-async def 노래끄기(message, musicnow):
+async def 노래끄기(message):
     if vc.is_playing():
         vc.stop()
         await message.channel.send(embed = discord.Embed(title= "노래끄기", description = musicnow[0]  + "을(를) 종료했습니다.", color = 0x00ff00))
@@ -230,22 +230,22 @@ async def 노래끄기(message, musicnow):
         await message.channel.send("지금 노래가 재생되지 않네요.")
 
 
-async def 지금노래(message, musicnow):
+async def 지금노래(message):
     if not vc.is_playing():
         await message.channel.send("지금은 노래가 재생되지 않네요..")
     else:
         await message.channel.send(embed = discord.Embed(title = "지금노래", description = "현재" + musicnow[0] + "을(를) 재생하고 있습니다.", color= 0x00ff00))
 
 
-async def 대기열추가(message, msg, user, musictitle, musicnow, song_queue):
+async def 대기열추가(message, msg):
 
     user.append(msg)
-    result, URLTEST = title(msg, musictitle, musicnow)
+    result, URLTEST = title(msg)
     song_queue.append(URLTEST)
     await message.channel.send(result + "를 재생목록에 추가했어요!")
 
 
-async def 대기열삭제(message, number, musicnow, user, musictitle, song_queue):
+async def 대기열삭제(message, number):
     try:
         ex = len(musicnow) - len(user)
         del user[int(number) - 1]
@@ -264,7 +264,7 @@ async def 대기열삭제(message, number, musicnow, user, musictitle, song_queu
                 await message.channel.send("숫자를 입력해주세요!")
 
 
-async def 목록(message, musictitle):
+async def 목록(message):
     if len(musictitle) == 0:
         await message.channel.send("아직 아무노래도 등록하지 않았어요.")
     else:
@@ -276,7 +276,7 @@ async def 목록(message, musictitle):
         await message.channel.send(embed = discord.Embed(title= "노래목록", description = Text.strip(), color = 0x00ff00))
 
 
-async def 목록초기화(message, musicnow, user, musictitle, song_queue):
+async def 목록초기화(message):
     try:
         ex = len(musicnow) - len(user)
         del user[:]
@@ -292,7 +292,7 @@ async def 목록초기화(message, musicnow, user, musictitle, song_queue):
         await message.channel.send("아직 아무노래도 등록하지 않았어요.")
 
 
-async def 목록재생(message, user, musicnow, song_queue, musictitle, app):
+async def 목록재생(message, app):
 
     YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
     FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
@@ -304,7 +304,7 @@ async def 목록재생(message, user, musicnow, song_queue, musictitle, app):
             for i in range(len(musicnow) - len(user)):
                 del musicnow[0]
         if not vc.is_playing():
-            play(message, song_queue, user, musictitle, app)
+            play(message, app)
         else:
             await message.channel.send("노래가 이미 재생되고 있어요!")
 

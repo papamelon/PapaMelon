@@ -10,6 +10,18 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from discord.utils import get
 from discord import FFmpegPCMAudio
+from webdriver_manager.chrome import ChromeDriverManager
+import lxml
+import ffmpeg
+
+user = [] #유저가 입력한 노래 저장하는 배열
+musictitle = [] #넌 노래들의 노래 제목
+song_queue = [] #넌 노래들의 링크
+musicnow = [] #현재 출력되는 노래
+
+userF = [] #유저의 정보를 저장하느 배열
+userFlist = [] #유저 개인별 노래저장하는 배열
+allplaylist = [] #플레이리스트 배열
 
 def title(msg, musictitle, musicnow):
     global music
@@ -20,8 +32,8 @@ def title(msg, musictitle, musicnow):
     options = webdriver.ChromeOptions()
     options.add_argument("headless")
 
-    chromedriver_dir = "D:\Discord_Bot\chromedriver.exe"
-    driver = webdriver.Chrome(chromedriver_dir, options = options)
+    chromedriver_dir = "/Users/junho/Documents/python-project/chromedriver"
+    driver = webdriver.Chrome(chromedriver_dir, options=options)
     driver.get("https://www.youtube.com/results?search_query="+msg+"+lyrics")
     source = driver.page_source
     bs = bs4.BeautifulSoup(source, 'lxml')
@@ -88,15 +100,15 @@ async def 나가(ctx):
         await ctx.send("이미 그 채널에 속해있지 않아요.")
 
 
-async def URL재생(ctx, *, url):
+async def URL재생(message, url):
     try:
         global vc
-        vc = await ctx.message.author.voice.channel.connect()
+        vc = await message.author.voice.channel.connect()
     except:
         try:
-            await vc.move_to(ctx.message.author.voice.channel)
+            await vc.move_to(message.author.voice.channel)
         except:
-            await ctx.send("채널에 유저가 접속해있지 않네요.")
+            await message.channel.send("채널에 유저가 접속해있지 않네요.")
 
 
     YDL_OPTIONS = {'format': 'bestaudio','noplaylist':'True'}
@@ -107,9 +119,9 @@ async def URL재생(ctx, *, url):
             info = ydl.extract_info(url, download=False)
         URL = info['formats'][0]['url']
         vc.play(FFmpegPCMAudio(URL, **FFMPEG_OPTIONS))
-        await ctx.send(embed = discord.Embed(title= "노래 재생", description = "현재 " + url + "을(를) 재생하고 있습니다.", color = 0x00ff00))
+        await message.channel.send(embed = discord.Embed(title= "노래 재생", description = "현재 " + url + "을(를) 재생하고 있습니다.", color = 0x00ff00))
     else:
-        await ctx.send("노래가 이미 재생되고 있습니다!")
+        await message.channel.send("노래가 이미 재생되고 있습니다!")
 
 
 async def 재생(message, msg, musicnow, user, musictitle, song_queue):
@@ -135,8 +147,8 @@ async def 재생(message, msg, musicnow, user, musictitle, song_queue):
         YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
         FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
             
-        chromedriver_dir = "C:/Users/USER/OneDrive/바탕 화면/chromedriver.exe"
-        driver = webdriver.Chrome(chromedriver_dir, options= options)
+        chromedriver_dir = "/Users/junho/Documents/python-project/chromedriver"
+        driver = webdriver.Chrome(chromedriver_dir, options=options)
         driver.get("https://www.youtube.com/results?search_query="+msg+"+lyrics")
         source = driver.page_source
         bs = bs4.BeautifulSoup(source, 'lxml')
@@ -171,8 +183,8 @@ async def 멜론차트(message):
         YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
         FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
             
-        chromedriver_dir = "D:\Discord_Bot\chromedriver.exe"
-        driver = webdriver.Chrome(chromedriver_dir, options = options)
+        chromedriver_dir = "/Users/junho/Documents/python-project/chromedriver"
+        driver = webdriver.Chrome(chromedriver_dir, options=options)
         driver.get("https://www.youtube.com/results?search_query=멜론차트")
         source = driver.page_source
         bs = bs4.BeautifulSoup(source, 'lxml')

@@ -12,3 +12,5 @@ beautifulsoup4==4.11.1
 async-generator==1.10
 async-timeout==4.0.2
 schoolInfo==1.0.2.0
+lxml==4.9.2
+ffmpeg==1.4

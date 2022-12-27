@@ -110,14 +110,14 @@ async def on_message(message):
             number = str(message.content[9:])
             await music.대기열삭제(message, number)
 
-        elif message.content.startswith("pp 목록"):
-            await music.목록(message)
-
         elif message.content.startswith("pp 목록초기화"):
             await music.목록초기화(message)
 
         elif message.content.startswith("pp 목록재생"):
             await music.목록재생(message, app)
+
+        elif message.content.startswith("pp 목록"):
+            await music.목록(message)
 
         elif message.content.startswith("pp 가사 "):
             name = str(message.content[6:])

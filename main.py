@@ -8,6 +8,7 @@ import emoji
 import asyncio
 
 
+import helping
 import music
 import school_eat
 import funny
@@ -68,6 +69,9 @@ async def on_message(message):
 
         # school_eat에 eat 함수에 학교이름과 메시지 넘겨주기
         await school_eat.eat(message, text)
+
+    elif message.content.startswith("pp 도움말"):
+        await helping.helping(message)
 
 
 
